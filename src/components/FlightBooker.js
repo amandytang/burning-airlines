@@ -31,7 +31,21 @@ _handleSubmit (e) {
   render() {
     return (
       <form className="searchForm" onSubmit={ this._handleSubmit }>
-        <input type="submit" value="Search" />
+        <h2>Find Flights</h2>
+        <div className="originDropdown">
+          <label className="originLabel">from</label><select value={this.state.origin} onChange = {this._handleOriginChange} className="select-origin"></select>
+        </div>
+        <div className="destinationDropdown">
+          <label className="destinationLabel">to</label><select value={this.state.destination} onChange = {this._handleDestinationChange} className="select-destination"></select>
+        </div>
+        <input type="submit" value="Search" id="searchButton" style={{
+            "background": "#1c4a7d",
+            "color":  "white",
+            "font-size":  "1.2em",
+            "font-family": "'Nunito', sans-serif",
+            "padding": "5px 15px 5px 15px",
+            "border": "none"
+        }}/>
       </form>
     )
   }

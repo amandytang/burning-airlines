@@ -9,8 +9,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-          <img className="header" src="https://i.imgur.com/w6NB0jx.png" alt="Hero" />
-          <div className="search"><FlightSearchForm /></div>
+        <img className="header" src="https://i.imgur.com/w6NB0jx.png" alt="Hero" />
+        <div className="search"><FlightSearchForm /></div>
       </div>
     );
   }
