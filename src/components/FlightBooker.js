@@ -80,7 +80,7 @@ class FlightDisplay extends Component { // Like your gallery
   }
 }
 
-class FlightSearch extends Component {
+class FlightBooker extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -100,8 +100,11 @@ class FlightSearch extends Component {
 
   render() {
     return (
+      <div>
       <div className="search">
         <FlightSearchForm onSubmit={() => this.fetchFlights}/>
+      </div>
+      <FlightDisplay />
       </div>
     );
 
@@ -109,8 +112,5 @@ class FlightSearch extends Component {
 }
 
 
-export {
-  FlightSearchForm,
-  FlightDisplay,
-  FlightSearch
-}
+export default
+  FlightBooker;
