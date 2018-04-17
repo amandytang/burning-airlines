@@ -1,5 +1,7 @@
 import React, { PureComponent as Component } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+
 
 const SERVER_URL = 'http://localhost:3333/flights.json'; // Replace with url.json from heroku after deployment. The api should return flight info (origin, date, destination and plane) - plane is currently empty because we haven't fixed the backend to allow us to assign a plane to a flight
 
@@ -36,14 +38,14 @@ _handleSubmit (e) {
         <div className="originDropdown">
           <label className="originLabel">from</label>
           <select value={this.state.origin} onChange = {this._handleOriginChange} className="select-origin">
-            <option value="" disabled selected>Choose a city...</option>
+            <option value="" disabled>Choose a city...</option>
             <option value="Sydney">Sydney</option>
             <option value="Tucson">Tucson</option>
           </select>
         </div>
         <div className="destinationDropdown">
           <label className="destinationLabel">to</label><select value={this.state.destination} onChange = {this._handleDestinationChange} className="select-destination">
-            <option value="" disabled selected>Choose a city...</option>
+            <option value="" disabled>Choose a city...</option>
             <option value="Sydney">Sydney</option>
             <option value="Tucson">Tucson</option>
           </select>
@@ -51,15 +53,22 @@ _handleSubmit (e) {
         <input type="submit" value="Search" id="searchButton" style={{
             "background": "#1c4a7d",
             "color":  "white",
-            "font-size":  "1.2em",
-            "margin-top":  "10px",
-            "font-family": "'Nunito', sans-serif",
+            "fontSize":  "1.2em",
+            "marginTop":  "10px",
+            "fontFamily": "'Nunito', sans-serif",
             "padding": "5px 15px 5px 15px",
             "border": "none"
         }}/>
       </form>
     )
   }
+
+
+
+}
+
+FlightSearchForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired
 }
 
 class FlightDisplay extends Component { // Like your gallery
@@ -78,15 +87,30 @@ class FlightSearch extends Component {
       flights: [],
       flight_id: ""
     }; // We want to keep track of the available flights, and the chosen flight
-    this.fetchFlights = this.fetchFlights.bind(this);
 
     const fetchFlights = () => { // Need to pass the origin and destination in
-    axios.get(SERVER_URL).then( results => this.setState( {flights: results.data }));
-    }
+    // console.log('preparing to fetch');  // Why does this line appear all the time
 
+    axios.get(SERVER_URL).then( results => this.setState( {flights: results }) )
+     // .then(console.log(results));
+     // Can't console log the returned object - says results is undefined. probably the get request failed?
+    }
+    fetchFlights();
   }
+
+  render() {
+    return (
+      <div className="search">
+        <FlightSearchForm onSubmit={() => this.fetchFlights}/>
+      </div>
+    );
+
+    }
 }
+
+
 export {
   FlightSearchForm,
   FlightDisplay,
+  FlightSearch
 }
