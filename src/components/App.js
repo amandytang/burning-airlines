@@ -1,5 +1,5 @@
 import React, { PureComponent as Component } from 'react';
-import FlightSearchForm from './FlightBooker'
+import FlightBooker, { FlightSearchForm, FlightDisplay } from './FlightBooker';
 
 class App extends Component {
   constructor(props) {
@@ -11,6 +11,7 @@ class App extends Component {
       <div className="App">
         <img className="header" src="https://i.imgur.com/w6NB0jx.png" alt="Hero" />
         <div className="search"><FlightSearchForm /></div>
+        <div><FlightDisplay /></div>
       </div>
     );
   }

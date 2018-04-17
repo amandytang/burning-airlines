@@ -28,6 +28,10 @@ img {
   margin:0;
 }
 
+.FlightDisplay {
+  padding-left: 85px;
+  padding-top: 25px;
+}
 .search, .searchForm {
   background-color: #876271;
   color: white;
@@ -40,7 +44,6 @@ img {
   font-size: 1.3em;
   font-weight: bold;
   margin-right: 30px;
-
 }
 
 .destinationLabel {
@@ -53,7 +56,6 @@ img {
 
 .originDropdown {
   padding-top: 20px;
-
 }
 
 .destinationDropdown  {
@@ -64,4 +66,5 @@ img {
 select {
   width: 400px;
   height: 35px;
-} 
+  font-size: 0.9em;
+}
