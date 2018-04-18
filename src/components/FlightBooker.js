@@ -75,12 +75,30 @@ function FlightDisplay (props) { // Like your gallery
 
     return (
       <div className="FlightDisplay"><h2>Available Flights</h2>
+      <table>
+      <tbody>
+      <tr>
+      <td><h3 className="tableHeading">Origin</h3></td>
+      <td><h3 className="tableHeading">Destination</h3></td>
+      <td><h3 className="tableHeading">Date</h3></td>
+      <td><h3 className="tableHeading">Flight Number</h3></td>
+      </tr>
+      {props.flights.map((f) =>
+      <tr>
+      <td><p key={f.id}>{f.origin}</p></td>
+      <td><p key={f.id}>{f.destination}</p></td>
+      <td><p key={f.id}>{f.date}</p></td>
+      <td><p key={f.id}>BA0{f.id}</p></td>
 
-      {props.flights.map((f) => <div>
-        <p key={f.id}>{f.origin}</p><p key={f.id}>{f.origin}</p></div>  )}
+      </tr>
+          )}
+      </tbody>
+      </table>
+
       </div>
     ) // TODO show available flights here after AJAX implemented
-
+    // {props.flights.map((f) => <div>
+    //   <p key={f.id}>{f.origin}</p><p key={f.id}>{f.destination}</p><p key={f.id}>{f.date}</p><p key={f.id}>{f.id}</p></div>
 }
 
 class FlightBooker extends Component {
@@ -96,9 +114,21 @@ class FlightBooker extends Component {
 
   fetchFlights () { // Need to pass the origin and destination in
     console.log('preparing to fetch');
-    // axios.get(SERVER_URL).then( results => this.setState( {flights: results.data }) )
+    // axios.get(SERVER_URL).then( results => this.setState( {flights: results.data }))
 
-    axios.get(SERVER_URL).then( results => this.setState( {flights: results.data }))
+     axios.get(SERVER_URL).then( results => console.log( results.data.filter(filterByOD)) )
+     // axios.get(SERVER_URL).then( results => console.log( results.data.filter(isOrigin),  results.data.find(isDestination) ) )
+
+function filterByOD(item) {
+  if (item.origin === 'Sydney' && item.destination === 'Tucson') {
+    return true;
+  }
+}
+//
+// function isDestination(d) {
+//   return d.destination === 'Sydney';
+// }
+
   // setTimeout(fetchFlights, 10000); // function works on timeout - how to make it bind to onSubmit
  }
 

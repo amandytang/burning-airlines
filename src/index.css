@@ -68,3 +68,13 @@ select {
   height: 35px;
   font-size: 0.9em;
 }
+
+.tableHeading {
+  display:inline-block;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+td {
+  width: 150px;
+}
