@@ -86,6 +86,10 @@ td {
   text-align: center;
 }
 
+.seatMap p {
+  margin-top: 1em;
+}
+
 .seat {
   width:22%;
   height:80px;
