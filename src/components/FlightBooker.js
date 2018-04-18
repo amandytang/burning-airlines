@@ -67,17 +67,20 @@ _handleSubmit (e) {
 
 }
 
-FlightSearchForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired
-}
+// FlightSearchForm.propTypes = {
+//   onSubmit: PropTypes.func.isRequired
+// }
 
-class FlightDisplay extends Component { // Like your gallery
-  render () {
+function FlightDisplay (props) { // Like your gallery
+
     return (
       <div className="FlightDisplay"><h2>Available Flights</h2>
+
+      {props.flights.map((f) => <div>
+        <p key={f.id}>{f.origin}</p><p key={f.id}>{f.origin}</p></div>  )}
       </div>
     ) // TODO show available flights here after AJAX implemented
-  }
+
 }
 
 class FlightBooker extends Component {
@@ -87,24 +90,25 @@ class FlightBooker extends Component {
       flights: [],
       flight_id: ""
     }; // We want to keep track of the available flights, and the chosen flight
-
-    const fetchFlights = () => { // Need to pass the origin and destination in
-    // console.log('preparing to fetch');  // Why does this line appear all the time
-
-    axios.get(SERVER_URL).then( results => this.setState( {flights: results }) )
-     // .then(console.log(results));
-     // Can't console log the returned object - says results is undefined. probably the get request failed?
-    }
-    fetchFlights();
+    this.fetchFlights = this.fetchFlights.bind(this);
+    // fetchFlights();
   }
+
+  fetchFlights () { // Need to pass the origin and destination in
+    console.log('preparing to fetch');
+    // axios.get(SERVER_URL).then( results => this.setState( {flights: results.data }) )
+
+    axios.get(SERVER_URL).then( results => this.setState( {flights: results.data }))
+  // setTimeout(fetchFlights, 10000); // function works on timeout - how to make it bind to onSubmit
+ }
 
   render() {
     return (
       <div>
-      <div className="search">
-        <FlightSearchForm onSubmit={() => this.fetchFlights}/>
-      </div>
-      <FlightDisplay />
+        <div className="search">
+          <FlightSearchForm onSubmit={this.fetchFlights}/>
+        </div>
+        <FlightDisplay flights={this.state.flights} />
       </div>
     );
 
@@ -112,5 +116,4 @@ class FlightBooker extends Component {
 }
 
 
-export default
-  FlightBooker;
+export default FlightBooker;
