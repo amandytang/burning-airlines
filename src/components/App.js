@@ -13,7 +13,8 @@ class App extends Component {
       <div><Login /></div>
         <img className="header" src="https://i.imgur.com/w6NB0jx.png" alt="Hero" />
         <div><FlightBooker /></div>
-
+        <div><SelectSeat /></div>
+        <div><login /></div>
       </div>
 
     );
