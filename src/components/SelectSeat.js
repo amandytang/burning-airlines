@@ -9,10 +9,11 @@ const SERVER_URL = 'http://localhost:3001/flights/1.json'
 // onclick user can select seat id. show selected seat in the dom.
 // when user clicks select seat. chosen seat id is sent to the database as not available anymore.
 
-// function hello(){
-//   console.log('isthisworking')
-// }
+// need to get json from heroku for flight number x.
+// filter seat number data and if seat number is present change the color
+// to taken. and disable the click handle to no click.
 //
+
 class SeatMap extends Component {
   constructor(props){
     super(props);
@@ -38,13 +39,7 @@ class SeatMap extends Component {
 
 }
 
-// function SeatMap(props){
-//   return(
-//     <section className="seatMap">
-//         {props.seat.map((s) => <div id={s} className="seat"><p>{s}</p></div>)}
-//     </section>
-//   );
-// }
+
 
 class SelectSeat extends Component {
   constructor(props){
