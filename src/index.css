@@ -14,7 +14,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Nunito', sans-serif;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .header {
@@ -77,4 +77,27 @@ select {
 
 td {
   width: 150px;
+}
+
+/* select seat styles
+============================================================================ */
+
+.seatMap {
+  text-align: center;
+}
+
+.seat {
+  width:22%;
+  height:80px;
+  /* border: 1px solid blue; */
+  background: url(./chair.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-bottom: 1em;
+}
+
+.seatMap {
+  display: flex;
+  flex-wrap: wrap
 }
