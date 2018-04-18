@@ -259,7 +259,7 @@ class FlightBooker extends Component {
           <FlightSearchForm onSubmit={this.fetchFlights}/>
         </div>
         <FlightDisplay flights={this.state.flights} />
-
+        <SeatMap />
       </div>
     );
 
