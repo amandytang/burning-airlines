@@ -1,6 +1,7 @@
 import React, { PureComponent as Component } from 'react';
 import FlightBooker from './FlightBooker';
 
+
 class App extends Component {
   constructor(props) {
     super(props);
