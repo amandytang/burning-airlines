@@ -14,7 +14,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Nunito', sans-serif;
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 
 .header {
@@ -101,7 +101,16 @@ td {
   margin-bottom: 1em;
 }
 
+.seatBlue {
+  background: url(./chair2.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .seatMap {
+  max-width: 500px;
+  margin: 0 auto;
   display: flex;
   flex-wrap: wrap
 }

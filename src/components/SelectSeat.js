@@ -1,6 +1,7 @@
 import React, { PureComponent as Component} from 'react';
 import axios from 'axios';
 
+
 // const SERVER_URL = 'http://localhost:3001/flight_users.json'
 const SERVER_URL = 'http://flaming-airlines.herokuapp.com/flight_users.json'
 
@@ -16,15 +17,45 @@ class SeatMap extends Component {
     super(props);
     this.state = {
       seats: Array.from({length: 40}, (x,i) => i+1),
-      selectedSeat: ''}
+      selectedSeat: '',
+      occupied: '',
+      selected: false
+    }
     this._handleChange = this._handleChange.bind(this);
     this.saveSeat = this.saveSeat.bind(this);
+    this.showOccupied = this.showOccupied.bind(this);
+    this.fetchSeats = this.fetchSeats.bind(this);
+
+    //occupied seats Polling
+    // const fetchSeats = () => { // fat arrow functions do not break the conenction to this
+    //   axios.get(SERVER_URL).then(results => this.setState({occupied: results.data.map(item => item.seat)}))
+    //   setTimeout(fetchSeats, 40000); // recursion chane this bac to 4seconds
+    // }
+    // fetchSeats();
    }
+
+  fetchSeats(){ // fat arrow functions do not break the conenction to this
+     axios.get(SERVER_URL).then(results => this.setState({occupied: results.data.map(item => item.seat)}))
+     setTimeout(this.fetchSeats, 40000); // recursion chane this bac to 4seconds
+   };
+
 
    _handleChange(e){
     alert(e.currentTarget.id);
     this.setState({selectedSeat: e.currentTarget.id });
+    console.log(this.state.selectedSeat);
+    // const newTransform = this.state.selected === 'rotateY(180deg)' ? 'rotateY(0deg)' : 'rotateY(180deg)';
+    this.setState({selected: !this.state.selected})
+
  };
+
+   showOccupied(e){
+     e.preventDefault();
+     this.fetchSeats();
+     console.log(this.state.occupied);
+
+
+   }
 
   saveSeat(e){
      e.preventDefault();
@@ -41,7 +72,7 @@ class SeatMap extends Component {
      .catch(error => {
          console.log(error.response)
      });
-};
+  };
 
     render() {
       return(
@@ -51,11 +82,13 @@ class SeatMap extends Component {
             <form>
               <p>book this seat?</p>
               <button onClick={this.saveSeat}>submit</button>
+              <button onClick={this.showOccupied}>show occupied</button>
             </form>
           </div>
 
           <div className="seatMap">
-              {this.state.seats.map((s) => <div onClick={this._handleChange} id={s} key={s} className="seat"><p>{s}</p></div>)}
+              {this.state.seats.map((s) => <div onClick={this._handleChange} id={s} key={s} className='seat'><p>{s}</p></div>)}
+              {/* {this.state.seats.map((s) => <div onClick={this._handleChange} id={s} key={s} className={this.state.selected ? 'seatBlue seat' : 'seat'}><p>{s}</p></div>)} */}
           </div>
         </div>
       );
@@ -64,25 +97,10 @@ class SeatMap extends Component {
 }
 
 
-
-
 class SelectSeat extends Component {
   constructor(props){
     super(props);
-    this.state = {
-      seat: "",
-      user_id:"",
-      flight_id: "1"}
-    // this.saveSeat = this.saveSeat.bind(this);
-
-
-  //   //occupied seats Polling
-  //   const fetchSecrets = () => { // fat arrow functions do not break the conenction to this
-  //     axios.get(SERVER_URL).then(results => this.setState({occupied: results.data}))
-  //     setTimeout(fetchSecrets, 4000); // recursion
-  //   }
-  //
-  // fetchSecrets();
+    this.state = {}
 }
 
   render(){
