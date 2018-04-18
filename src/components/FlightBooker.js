@@ -2,7 +2,7 @@ import React, { PureComponent as Component } from 'react';
 import axios from 'axios';
 // import PropTypes from 'prop-types';
 
-const SERVER_URL = 'http://localhost:3333/flights.json'; // Replace with url.json from heroku after deployment. The api should return flight info (origin, date, destination and plane) - plane is currently empty because we haven't fixed the backend to allow us to assign a plane to a flight
+const SERVER_URL = 'https://flaming-airlines.herokuapp.com/flights.json'; // Replace with url.json from heroku after deployment. The api should return flight info (origin, date, destination and plane) - plane is currently empty because we haven't fixed the backend to allow us to assign a plane to a flight
 
 class FlightSearchForm extends Component {
   constructor(props) {
@@ -25,11 +25,6 @@ _handleDestinationChange (e) {
 }
 
 _handleSubmit (e) {
-  e.preventDefault();
-  this.props.onSubmit( this.state.origin, this.state.destination )
-}
-
-_handleSeat (e) {
   e.preventDefault();
   this.props.onSubmit( this.state.origin, this.state.destination )
 }
@@ -77,9 +72,22 @@ class FlightDisplay extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        flights: []
+        flights: [],
+        flight_id: ""
     };
+    this._handleSeat = this._handleSeat.bind(this);
 }
+
+
+_handleSeat (e) {
+  e.preventDefault();
+  let flight_id = e.target.getAttribute("id");
+  console.log(flight_id);
+  this.setState({ flight_id });
+}
+// we now have the flight_id in the flightdisplay component's state.
+// send flight_id in ajax request to db to find the seatMap
+
 render() {
 
     return ( //TODO conditional logic ot only display table headings if there are flights to display
@@ -98,7 +106,7 @@ render() {
       <td><p key={f.id}>{f.destination}</p></td>
       <td><p key={f.id}>{f.date}</p></td>
       <td><p key={f.id}>BA0{f.id}</p></td>
-      <td><form className="seatFetcher" onSubmit={ this._handleSeat }><input type="submit" value="View" id="searchButton" style={{
+      <td><form className="seatFetcher" id={f.id} onSubmit={ this._handleSeat }><input type="submit" value="View" id="searchButton" style={{
           "background": "#1c4a7d",
           "color":  "white",
           "fontSize":  "1.2em",
