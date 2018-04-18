@@ -63,8 +63,6 @@ _handleSubmit (e) {
     )
   }
 
-
-
 }
 
 // FlightSearchForm.propTypes = {
@@ -73,7 +71,7 @@ _handleSubmit (e) {
 
 function FlightDisplay (props) { // Like your gallery
 
-    return (
+    return ( //TODO conditional logic ot only display table headings if there are flights to display
       <div className="FlightDisplay"><h2>Available Flights</h2>
       <table>
       <tbody>
@@ -89,13 +87,24 @@ function FlightDisplay (props) { // Like your gallery
       <td><p key={f.id}>{f.destination}</p></td>
       <td><p key={f.id}>{f.date}</p></td>
       <td><p key={f.id}>BA0{f.id}</p></td>
-
+      <td><form><input type="submit" value="View" id="searchButton" style={{
+          "background": "#1c4a7d",
+          "color":  "white",
+          "fontSize":  "1.2em",
+          "marginTop":  "10px",
+          "fontFamily": "'Nunito', sans-serif",
+          "padding": "5px 15px 5px 15px",
+          "border": "none"
+      }}/>
+    </form></td>
       </tr>
           )}
       </tbody>
       </table>
 
       </div>
+      // <td><p key={f.id}><a href="#" className="flightNumber">BA0{f.id}</a></p></td>
+
     ) // TODO show available flights here after AJAX implemented
     // {props.flights.map((f) => <div>
     //   <p key={f.id}>{f.origin}</p><p key={f.id}>{f.destination}</p><p key={f.id}>{f.date}</p><p key={f.id}>{f.id}</p></div>
@@ -111,15 +120,15 @@ class FlightBooker extends Component {
       destination: ''
     }; // We want to keep track of the available flights, and the chosen flight
     this.fetchFlights = this.fetchFlights.bind(this);
-    this.filterByOD = this.filterByOD.bind(this);
+    // this.filterByOD = this.filterByOD.bind(this);
     // fetchFlights();
   }
-
-  filterByOD(item) {
-    if (item.origin === this.state.origin && item.destination === this.state.destination) {
-      return true;
-    }
-  }
+  //
+  // filterByOD(item) {
+  //   if (item.origin === 'Sydney' && item.destination === 'Tuscon') {
+  //     return true;
+  //   }
+  // }
 
   fetchFlights () { // Need to pass the origin and destination in
     console.log('preparing to fetch');
@@ -127,7 +136,8 @@ class FlightBooker extends Component {
 
     // axios.get(SERVER_URL).then( results => this.setState( {flights: results.data }))
 
-     axios.get(SERVER_URL).then( results => console.log( results.data.filter(this.filterByOD)) )
+     axios.get(SERVER_URL).then( results => this.setState({ flights: results.data }));
+
      // axios.get(SERVER_URL).then( results => console.log( results.data.filter(isOrigin),  results.data.find(isDestination) ) )
 
 // We need to access origin and destination (state) from child and put into variables to filter by
@@ -140,6 +150,7 @@ class FlightBooker extends Component {
   // setTimeout(fetchFlights, 10000); // function works on timeout - how to make it bind to onSubmit
  }
 
+
   render() {
     return (
       <div>
@@ -147,6 +158,7 @@ class FlightBooker extends Component {
           <FlightSearchForm onSubmit={this.fetchFlights}/>
         </div>
         <FlightDisplay flights={this.state.flights} />
+        
       </div>
     );
 
