@@ -1,7 +1,6 @@
 import React, { PureComponent as Component } from 'react';
 import axios from 'axios';
-import PropTypes from 'prop-types';
-
+// import PropTypes from 'prop-types';
 
 const SERVER_URL = 'http://localhost:3333/flights.json'; // Replace with url.json from heroku after deployment. The api should return flight info (origin, date, destination and plane) - plane is currently empty because we haven't fixed the backend to allow us to assign a plane to a flight
 
@@ -26,6 +25,11 @@ _handleDestinationChange (e) {
 }
 
 _handleSubmit (e) {
+  e.preventDefault();
+  this.props.onSubmit( this.state.origin, this.state.destination )
+}
+
+_handleSeat (e) {
   e.preventDefault();
   this.props.onSubmit( this.state.origin, this.state.destination )
 }
@@ -69,7 +73,14 @@ _handleSubmit (e) {
 //   onSubmit: PropTypes.func.isRequired
 // }
 
-function FlightDisplay (props) { // Like your gallery
+class FlightDisplay extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        flights: []
+    };
+}
+render() {
 
     return ( //TODO conditional logic ot only display table headings if there are flights to display
       <div className="FlightDisplay"><h2>Available Flights</h2>
@@ -81,13 +92,13 @@ function FlightDisplay (props) { // Like your gallery
       <td><h3 className="tableHeading">Date</h3></td>
       <td><h3 className="tableHeading">Flight Number</h3></td>
       </tr>
-      {props.flights.map((f) =>
+      {this.props.flights.map((f) =>
       <tr>
       <td><p key={f.id}>{f.origin}</p></td>
       <td><p key={f.id}>{f.destination}</p></td>
       <td><p key={f.id}>{f.date}</p></td>
       <td><p key={f.id}>BA0{f.id}</p></td>
-      <td><form><input type="submit" value="View" id="searchButton" style={{
+      <td><form className="seatFetcher" onSubmit={ this._handleSeat }><input type="submit" value="View" id="searchButton" style={{
           "background": "#1c4a7d",
           "color":  "white",
           "fontSize":  "1.2em",
@@ -101,13 +112,11 @@ function FlightDisplay (props) { // Like your gallery
           )}
       </tbody>
       </table>
-
       </div>
-      // <td><p key={f.id}><a href="#" className="flightNumber">BA0{f.id}</a></p></td>
 
-    ) // TODO show available flights here after AJAX implemented
-    // {props.flights.map((f) => <div>
-    //   <p key={f.id}>{f.origin}</p><p key={f.id}>{f.destination}</p><p key={f.id}>{f.date}</p><p key={f.id}>{f.id}</p></div>
+    )
+  }
+
 }
 
 class FlightBooker extends Component {
@@ -130,15 +139,19 @@ class FlightBooker extends Component {
   //   }
   // }
 
-  fetchFlights () { // Need to pass the origin and destination in
+  fetchFlights (o,d) { // Need to pass the origin and destination in
     console.log('preparing to fetch');
      // console.log(this.state.origin);
 
     // axios.get(SERVER_URL).then( results => this.setState( {flights: results.data }))
 
-     axios.get(SERVER_URL).then( results => this.setState({ flights: results.data }));
-
-     // axios.get(SERVER_URL).then( results => console.log( results.data.filter(isOrigin),  results.data.find(isDestination) ) )
+     axios.get(SERVER_URL).then(function (results){
+             let flightsArr = [];
+             for (let i = 0; i<results.data.length;i++)
+               if (results.data[i].origin === o && results.data[i].destination === d)
+                 flightsArr.push(results.data[i]);
+             this.setState({ flights:flightsArr });
+           }.bind(this));
 
 // We need to access origin and destination (state) from child and put into variables to filter by
 
@@ -158,7 +171,7 @@ class FlightBooker extends Component {
           <FlightSearchForm onSubmit={this.fetchFlights}/>
         </div>
         <FlightDisplay flights={this.state.flights} />
-        
+
       </div>
     );
 
