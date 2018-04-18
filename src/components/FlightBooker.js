@@ -27,7 +27,7 @@ _handleDestinationChange (e) {
 
 _handleSubmit (e) {
   e.preventDefault();
-  this.props.onSubmit( this.state.origin, this.state.destination ) // Parent houses this function but child is running it and passing up the origin and destination info
+  this.props.onSubmit( this.state.origin, this.state.destination )
 }
 
   render() {
@@ -106,25 +106,33 @@ class FlightBooker extends Component {
     super(props);
     this.state = {
       flights: [],
-      flight_id: ""
+      flight_id: '', // To pass to reservations later on
+      origin: '',
+      destination: ''
     }; // We want to keep track of the available flights, and the chosen flight
     this.fetchFlights = this.fetchFlights.bind(this);
+    this.filterByOD = this.filterByOD.bind(this);
     // fetchFlights();
+  }
+
+  filterByOD(item) {
+    if (item.origin === this.state.origin && item.destination === this.state.destination) {
+      return true;
+    }
   }
 
   fetchFlights () { // Need to pass the origin and destination in
     console.log('preparing to fetch');
+     // console.log(this.state.origin);
+
     // axios.get(SERVER_URL).then( results => this.setState( {flights: results.data }))
 
-     axios.get(SERVER_URL).then( results => console.log( results.data.filter(filterByOD)) )
+     axios.get(SERVER_URL).then( results => console.log( results.data.filter(this.filterByOD)) )
      // axios.get(SERVER_URL).then( results => console.log( results.data.filter(isOrigin),  results.data.find(isDestination) ) )
 
-function filterByOD(item) {
-  if (item.origin === 'Sydney' && item.destination === 'Tucson') {
-    return true;
-  }
-}
-//
+// We need to access origin and destination (state) from child and put into variables to filter by
+
+
 // function isDestination(d) {
 //   return d.destination === 'Sydney';
 // }
