@@ -28,6 +28,12 @@ img {
   margin:0;
 }
 
+.LoginDisplay {
+  /* text-align: center; */
+  padding-left: 85px;
+  background-color: #729fc8;
+  padding-top: 15px;
+}
 .FlightDisplay {
   padding-left: 85px;
   padding-top: 25px;
