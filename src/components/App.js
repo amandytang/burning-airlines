@@ -1,7 +1,7 @@
 import React, { PureComponent as Component } from 'react';
 import FlightBooker from './FlightBooker';
 import Login from './Login';
-import SelectSeat from './SelectSeat';
+// import SelectSeat from './SelectSeat';
 
 class App extends Component {
   constructor(props) {

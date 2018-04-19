@@ -1,7 +1,6 @@
 import React, { PureComponent as Component } from 'react';
 import axios from 'axios';
-import PropTypes from 'prop-types';
-
+// import PropTypes from 'prop-types';
 
 const SERVER_URL = 'http://localhost:3333/flights.json'; // Replace with url.json from heroku after deployment. The api should return flight info (origin, date, destination and plane) - plane is currently empty because we haven't fixed the backend to allow us to assign a plane to a flight
 
@@ -29,6 +28,9 @@ _handleSubmit (e) {
   e.preventDefault();
   this.props.onSubmit( this.state.origin, this.state.destination )
 }
+
+
+
 
   render() {
     return (
@@ -69,10 +71,30 @@ _handleSubmit (e) {
 //   onSubmit: PropTypes.func.isRequired
 // }
 
-function FlightDisplay (props) { // Like your gallery
+class FlightDisplay extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        flights: [],
+        flight_id: ""
+    };
+    this._handleSeat = this._handleSeat.bind(this);
+}
 
-    return ( //TODO conditional logic ot only display table headings if there are flights to display
-      <div className="FlightDisplay"><h2>Available Flights</h2>
+_handleSeat (e) {
+  e.preventDefault();
+  let flight_id = e.target.getAttribute("id");
+  console.log(flight_id);
+  this.setState({ flight_id });
+}
+
+// we now have the flight_id in the FlightDisplay (gallery) component's state.
+// Need to pass this to the booking form - but making calling this.props.flight_id
+
+render() {
+
+    return (
+      <div><div className="FlightDisplay"><h2>Available Flights</h2>
       <table>
       <tbody>
       <tr>
@@ -81,14 +103,14 @@ function FlightDisplay (props) { // Like your gallery
       <td><h3 className="tableHeading">Date</h3></td>
       <td><h3 className="tableHeading">Flight Number</h3></td>
       </tr>
-      {props.flights.map((f) =>
+      {this.props.flights.map((f) =>
       <tr>
       <td><p key={f.id}>{f.origin}</p></td>
       <td><p key={f.id}>{f.destination}</p></td>
       <td><p key={f.id}>{f.date}</p></td>
       <td><p key={f.id}>BA0{f.id}</p></td>
-      <td><form><input type="submit" value="View" id="searchButton" style={{
-          "background": "#1c4a7d",
+      <td><form className="seatFetcher" id={f.id} onSubmit={ this._handleSeat }><input type="submit" value="View" style={{
+               "background": "#1c4a7d",
           "color":  "white",
           "fontSize":  "1.2em",
           "marginTop":  "10px",
@@ -102,12 +124,12 @@ function FlightDisplay (props) { // Like your gallery
       </tbody>
       </table>
 
-      </div>
-      // <td><p key={f.id}><a href="#" className="flightNumber">BA0{f.id}</a></p></td>
+    </div>        <SeatMap />
+</div>
 
-    ) // TODO show available flights here after AJAX implemented
-    // {props.flights.map((f) => <div>
-    //   <p key={f.id}>{f.origin}</p><p key={f.id}>{f.destination}</p><p key={f.id}>{f.date}</p><p key={f.id}>{f.id}</p></div>
+    )
+  }
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -130,25 +152,26 @@ class SeatMap extends Component {
       selectedSeat: '',
       occupied: [],
       success:'',
-      selected: false
+      selected: false,
+      flight_id: ''
     }
     this._handleChange = this._handleChange.bind(this);
     this.saveSeat = this.saveSeat.bind(this);
     this.showOccupied = this.showOccupied.bind(this);
-    // this.fetchSeats = this.fetchSeats.bind(this);
+    this.fetchSeats = this.fetchSeats.bind(this);
 
 
     const fetchSeats = () => { // fat arrow functions do not break the conenction to this
       axios.get(SERVER_URL2).then(results => this.setState({occupied: results.data.map(item => item.seat)}))
-      setTimeout(fetchSeats, 4000); //
+      setTimeout(fetchSeats, 400000); //
     }
     fetchSeats();
    }
 
-  // fetchSeats(){ // fat arrow functions do not break the conenction to this
-  //    axios.get(SERVER_URL2).then(results => this.setState({occupied: results.data.map(item => item.seat)}))
-  //    setTimeout(this.fetchSeats, 40000); // recursion change this back to 4sec
-  //  };
+  fetchSeats(){ // fat arrow functions do not break the conenction to this
+     axios.get(SERVER_URL2).then(results => this.setState({occupied: results.data.map(item => item.seat)}))
+     setTimeout(this.fetchSeats, 40000); // recursion change this back to 4sec
+   };
 
 
    _handleChange(e){
@@ -166,7 +189,6 @@ class SeatMap extends Component {
      this.fetchSeats();
      console.log(this.state.occupied);
 
-
    }
 
   saveSeat(e){
@@ -178,7 +200,7 @@ class SeatMap extends Component {
      // this.setState({secrets: [...this.state.secrets,s]});
      axios.post(SERVER_URL, {
        seat: this.state.selectedSeat,
-       user_id:5,
+       user_id: 6,
        flight_id: 1,
      }).then(response => {
       console.log(response)
@@ -192,11 +214,25 @@ class SeatMap extends Component {
       return(
         <div>
           <div>
-            <h2>Booking Form</h2>
-            <form>
+            <h2 className="bookingHeading">Booking Form</h2>
+            <form className="bookingForm">
               <p><span>Selected Seat: {this.state.selectedSeat}</span></p>
-              <button onClick={this.saveSeat}>submit</button>
-              <button onClick={this.showOccupied}>show occupied</button>
+
+              {/* <button onClick={this.saveSeat}>submit</button>
+              <button onClick={this.showOccupied}>show occupied</button> */}
+
+              <button style={{
+                  "background": "#1c4a7d",
+                  "color":  "white",
+                  "fontSize":  "1.2em",
+                  "marginTop":  "15px",
+                  "marginBottom": "15px",
+                  "fontFamily": "'Nunito', sans-serif",
+                  "padding": "5px 15px 5px 15px",
+                  "border": "none"
+              }} onClick={this.saveSeat}>Book</button>
+              {/* <button onClick={this.showOccupied}>show occupied</button> */}
+
               <h2>{this.state.success}</h2>
             </form>
           </div>
@@ -242,10 +278,13 @@ class FlightBooker extends Component {
 
     // axios.get(SERVER_URL).then( results => this.setState( {flights: results.data }))
 
-     axios.get(SERVER_URL).then( results => this.setState({ flights: results.data }));
-
-
-     // axios.get(SERVER_URL).then( results => console.log( results.data.filter(isOrigin),  results.data.find(isDestination) ) )
+     axios.get(SERVER_URL).then(function (results){
+             let flightsArr = [];
+             for (let i = 0; i<results.data.length;i++)
+               if (results.data[i].origin === o && results.data[i].destination === d)
+                 flightsArr.push(results.data[i]);
+             this.setState({ flights:flightsArr });
+           }.bind(this));
 
 // We need to access origin and destination (state) from child and put into variables to filter by
 
@@ -258,8 +297,6 @@ class FlightBooker extends Component {
  }
 
 
-
-
   render() {
     return (
       <div>
@@ -267,11 +304,10 @@ class FlightBooker extends Component {
           <FlightSearchForm onSubmit={this.fetchFlights}/>
         </div>
         <FlightDisplay flights={this.state.flights} />
-        <SeatMap />
       </div>
     );
 
-    }
+  }
 }
 
 
