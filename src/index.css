@@ -88,13 +88,14 @@ td {
 
 .seatMap p {
   margin-top: 1em;
+  color: #876271;
 }
 
 .seat {
   width:22%;
   height:80px;
   /* border: 1px solid blue; */
-  background-color: red;
+  background: url(./chair.svg);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
