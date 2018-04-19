@@ -86,8 +86,11 @@ _handleSeat (e) {
   let flight_id = e.target.getAttribute("id");
   console.log(flight_id);
   this.setState({ flight_id });
-}
-
+  this.props.passFlightId(flight_id);
+} //
+// pass to child as prop
+// parent
+// pass from parent to child by passing a function
 // we now have the flight_id in the FlightDisplay (gallery) component's state.
 // Need to pass this to the booking form - but making calling this.props.flight_id
 
@@ -169,6 +172,7 @@ class SeatMap extends Component {
    }
 
   fetchSeats(){ // fat arrow functions do not break the conenction to this
+    console.log(this.state.flight_id);
      axios.get(SERVER_URL2).then(results => this.setState({occupied: results.data.map(item => item.seat)}))
      setTimeout(this.fetchSeats, 40000); // recursion change this back to 4sec
    };
@@ -262,6 +266,7 @@ class FlightBooker extends Component {
       destination: ''
     }; // We want to keep track of the available flights, and the chosen flight
     this.fetchFlights = this.fetchFlights.bind(this);
+    this.passFlightId = this.passFlightId.bind(this); // You are binding this function to the parent
     // this.filterByOD = this.filterByOD.bind(this);
     // fetchFlights();
   }
@@ -295,6 +300,22 @@ class FlightBooker extends Component {
 
   // setTimeout(fetchFlights, 10000); // function works on timeout - how to make it bind to onSubmit
  }
+// writing this from parent's pOV so can't use this.state.f
+ passFlightId (flight_id) { // Would have thought we pass in the child's state like: this.state.flight_id as parameters but it fails to compile
+ debugger;
+   this.setState ({ // this refers to parent
+     flight_id: flight_id // Is this just going to set the state of the child though?
+   });
+ }
+// Child also needs to call this function
+
+// Think of react components like parent and child. If parent wants data from child they can just write it on a piece of paper. But if child wants something from the parent, the parent needs to give a function (phone) for the child to call and tell the parent the info
+
+// Child will be able to access the parent's data by calling this.props.propName? provided props has been passed down first
+
+ // To pass state from child to parent, we need to write a function in the parent which we give to the child to run via props (like <FlightDisplay flights={this.state.flights} />  The child runs the value and passes the state in
+
+
 
 
   render() {
@@ -303,12 +324,13 @@ class FlightBooker extends Component {
         <div className="search">
           <FlightSearchForm onSubmit={this.fetchFlights}/>
         </div>
-        <FlightDisplay flights={this.state.flights} />
+        <FlightDisplay flights={this.state.flights} passFlightId={this.passFlightId}/>
       </div>
     );
 
   }
 }
+// when you create flightdisplay, pass in a function
 
 
 export default FlightBooker;
