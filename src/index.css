@@ -94,7 +94,7 @@ td {
   width:22%;
   height:80px;
   /* border: 1px solid blue; */
-  background: url(./chair.svg);
+  background-color: red;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
