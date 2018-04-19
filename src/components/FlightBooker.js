@@ -29,11 +29,8 @@ _handleSubmit (e) {
   this.props.onSubmit( this.state.origin, this.state.destination )
 }
 
-_handleSeat (e) {
-  console.log()
-  e.preventDefault();
-  this.props.onSubmit( this.state.origin, this.state.destination )
-}
+
+
 
   render() {
     return (
@@ -78,9 +75,15 @@ class FlightDisplay extends Component {
   constructor(props) {
     super(props);
     this.state = {
+        flight_id: '',
         flights: []
     };
-}
+ }
+
+_handleSeat (e) {
+  e.preventDefault();
+ }
+
 render() {
 
     return ( //TODO conditional logic ot only display table headings if there are flights to display
@@ -184,8 +187,8 @@ class SeatMap extends Component {
      // this.setState({secrets: [...this.state.secrets,s]});
      axios.post(SERVER_URL, {
        seat: this.state.selectedSeat,
-       user_id:5,
-       flight_id: 1,
+       user_id: 5,
+       flight_id: this.props.flight_id,
      }).then(response => {
       console.log(response)
      })
@@ -205,7 +208,7 @@ class SeatMap extends Component {
                   "background": "#1c4a7d",
                   "color":  "white",
                   "fontSize":  "1.2em",
-                  "marginTop":  "10px",
+                  "marginTop":  "15px",
                   "marginBottom": "15px",
                   "fontFamily": "'Nunito', sans-serif",
                   "padding": "5px 15px 5px 15px",
@@ -287,7 +290,7 @@ class FlightBooker extends Component {
       </div>
     );
 
-    }
+  } //if
 }
 
 

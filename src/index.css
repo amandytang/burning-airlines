@@ -121,6 +121,7 @@ td {
 .seatMap {
   max-width: 400px;
   margin-left: 75px;
+  margin-bottom: 20px;
   display: flex;
   flex-wrap: wrap;
   text-align: center;
@@ -131,7 +132,7 @@ span {
 }
 
 .bookingForm {
-  margin: 15px 0px 15px 85px;
+  margin: 15px 0px 20px 85px;
 }
 
 #login {
