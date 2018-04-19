@@ -135,9 +135,10 @@ class SeatMap extends Component {
   constructor(props){
     super(props);
     this.state = {
-      seats: Array.from({length: 40}, (x,i) => i+1),
+      seats: Array.from({length: 20}, (x,i) => i+1),
       selectedSeat: '',
       occupied: '',
+      success:'',
       selected: false
     }
     this._handleChange = this._handleChange.bind(this);
@@ -160,7 +161,6 @@ class SeatMap extends Component {
 
 
    _handleChange(e){
-    alert(e.currentTarget.id);
     this.setState({selectedSeat: e.currentTarget.id });
     console.log(this.state.selectedSeat);
     // const newTransform = this.state.selected === 'rotateY(180deg)' ? 'rotateY(0deg)' : 'rotateY(180deg)';
@@ -179,6 +179,7 @@ class SeatMap extends Component {
   saveSeat(e){
      e.preventDefault();
      console.log('sending post');
+     this.setState({success: 'Your Seat Has Been Sucessfully Booked'});
      // this.state.secret.push(s); // Mutation never mutate arrays!!
      // this.setState({secrets: [...this.state.secrets,s]});
      axios.post(SERVER_URL, {
@@ -199,9 +200,10 @@ class SeatMap extends Component {
           <div>
             <h2 className="bookingHeading">Booking Form</h2>
             <form>
-              <p>book this seat?</p>
+              <p><span>Selected Seat: {this.state.selectedSeat}</span></p>
               <button onClick={this.saveSeat}>submit</button>
-              <button onClick={this.showOccupied}>show occupied</button>
+              {/* <button onClick={this.showOccupied}>show occupied</button> */}
+              <h2>{this.state.success}</h2>
             </form>
           </div>
 
