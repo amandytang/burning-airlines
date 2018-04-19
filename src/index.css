@@ -5,6 +5,10 @@
    padding: 0;
 }
 
+a {
+  text-decoration: none;
+}
+
 .App {
   margin: 0;
   padding: 0;
@@ -120,4 +124,13 @@ td {
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap
+}
+
+#login {
+  height: 35px;
+  margin-right: 10px;
+  margin-left: 5px;
+  border: none;
+  padding-left: 10px;
+  font-size: 0.9em;
 }

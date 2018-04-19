@@ -11,11 +11,9 @@ class App extends Component {
   render() {
     return (
       <div>
-      <div><Login /></div>
+        <div><Login /></div>
         <img className="header" src="https://i.imgur.com/w6NB0jx.png" alt="Hero" />
         <div><FlightBooker /></div>
-        <div><SelectSeat /></div>
-        <div><Login /></div>
       </div>
 
     );

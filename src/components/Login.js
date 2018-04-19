@@ -4,8 +4,17 @@ const Login = ({user, onSignOut})=> { //stateless component
 
   return (
     <div>
-    <h3>{user.name} you&#39;re ready to book!</h3>
-    <a href="javascript:;" onClick={onSignOut}>Sign out</a>
+    <h3 style={{ "display": "inline-block", "padding-right": "15px"}}>Welcome, {user.name}!</h3>
+    <a href="javascript:;" onClick={onSignOut} style={{
+        "background": "#1c4a7d",
+        "color":  "white",
+        "fontSize":  "1.2em",
+        "marginTop":  "10px",
+        "fontFamily": "'Nunito', sans-serif",
+        "padding": "5px 15px 5px 15px",
+        "border": "none",
+        "display": "inline-block"
+    }}>Sign out</a>
     </div>
   )
 }
@@ -19,10 +28,17 @@ class LoginForm extends Component { // accessing DOM refs
   render() {
     return (
       <div>
-        <h2>Start Here:</h2>
         <form onSubmit={this.handleSignIn.bind(this)}>
-          <input type="text" ref="name" placeholder="Enter Your Name" />
-          <input type="submit" value="Go" />
+          <input type="text" id="login" ref="name" placeholder="Username" />
+          <input type="submit" value="Login" style={{
+              "background": "#1c4a7d",
+              "color":  "white",
+              "fontSize":  "1.2em",
+              "marginTop":  "10px",
+              "fontFamily": "'Nunito', sans-serif",
+              "padding": "5px 15px 5px 15px",
+              "border": "none"
+          }}/>
         </form>
       </div>
     )
