@@ -75,18 +75,25 @@ class FlightDisplay extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        flight_id: '',
-        flights: []
+        flights: [],
+        flight_id: ""
     };
- }
+    this._handleSeat = this._handleSeat.bind(this);
+}
+
 
 _handleSeat (e) {
   e.preventDefault();
- }
+  let flight_id = e.target.getAttribute("id");
+  console.log(flight_id);
+  this.setState({ flight_id });
+}
+// we now have the flight_id in the flightdisplay component's state.
+// send flight_id in ajax request to db to find the seatMap
 
 render() {
 
-    return ( //TODO conditional logic ot only display table headings if there are flights to display
+    return ( 
       <div className="FlightDisplay"><h2>Available Flights</h2>
       <table>
       <tbody>
@@ -102,8 +109,8 @@ render() {
       <td><p key={f.id}>{f.destination}</p></td>
       <td><p key={f.id}>{f.date}</p></td>
       <td><p key={f.id}>BA0{f.id}</p></td>
-      <td><form className="seatFetcher" onSubmit={ this._handleSeat }><input type="submit" value="View" id="searchButton" style={{
-          "background": "#1c4a7d",
+      <td><form className="seatFetcher" id={f.id} onSubmit={ this._handleSeat }><input type="submit" value="View" id="searchButton" style={{
+               "background": "#1c4a7d",
           "color":  "white",
           "fontSize":  "1.2em",
           "marginTop":  "10px",
