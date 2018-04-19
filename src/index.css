@@ -154,3 +154,10 @@ span {
 .bookingHeading {
   padding-left: 85px;
 }
+
+.successMsg {
+  padding: .5em;
+  padding-bottom: 0;
+  padding-left: 0;
+  color: green;
+}

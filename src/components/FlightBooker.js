@@ -2,7 +2,7 @@ import React, { PureComponent as Component } from 'react';
 import axios from 'axios';
 // import PropTypes from 'prop-types';
 
-const SERVER_URL = 'http://localhost:3333/flights.json'; // Replace with url.json from heroku after deployment. The api should return flight info (origin, date, destination and plane) - plane is currently empty because we haven't fixed the backend to allow us to assign a plane to a flight
+const SERVER_URL = 'http://flaming-airlines.herokuapp.com/flights.json'; // Replace with url.json from heroku after deployment. The api should return flight info (origin, date, destination and plane) - plane is currently empty because we haven't fixed the backend to allow us to assign a plane to a flight
 
 class FlightSearchForm extends Component {
   constructor(props) {
@@ -127,7 +127,7 @@ render() {
       </tbody>
       </table>
 
-    </div>        <SeatMap />
+    </div>       {this.state.flight_id ? <SeatMap flight_id={this.state.flight_id} /> : ""}
 </div>
 
     )
@@ -155,8 +155,8 @@ class SeatMap extends Component {
       selectedSeat: '',
       occupied: [],
       success:'',
-      selected: false,
-      flight_id: ''
+      selected: false
+      // flight_id: this.props.flight_id
     }
     this._handleChange = this._handleChange.bind(this);
     this.saveSeat = this.saveSeat.bind(this);
@@ -205,7 +205,7 @@ class SeatMap extends Component {
      axios.post(SERVER_URL, {
        seat: this.state.selectedSeat,
        user_id: 6,
-       flight_id: 1,
+       flight_id: this.props.flight_id,
      }).then(response => {
       console.log(response)
      })
@@ -220,11 +220,9 @@ class SeatMap extends Component {
           <div>
             <h2 className="bookingHeading">Booking Form</h2>
             <form className="bookingForm">
+
               <p><span>Selected Seat: {this.state.selectedSeat}</span></p>
-
-              {/* <button onClick={this.saveSeat}>submit</button>
-              <button onClick={this.showOccupied}>show occupied</button> */}
-
+              <p className="successMsg">{this.state.success}</p>
               <button style={{
                   "background": "#1c4a7d",
                   "color":  "white",
@@ -236,9 +234,8 @@ class SeatMap extends Component {
                   "border": "none"
               }} onClick={this.saveSeat}>Book</button>
               {/* <button onClick={this.showOccupied}>show occupied</button> */}
-
-              <h2>{this.state.success}</h2>
             </form>
+
           </div>
 
           <div className="seatMap">
@@ -302,7 +299,7 @@ class FlightBooker extends Component {
  }
 // writing this from parent's pOV so can't use this.state.f
  passFlightId (flight_id) { // Would have thought we pass in the child's state like: this.state.flight_id as parameters but it fails to compile
- debugger;
+
    this.setState ({ // this refers to parent
      flight_id: flight_id // Is this just going to set the state of the child though?
    });
