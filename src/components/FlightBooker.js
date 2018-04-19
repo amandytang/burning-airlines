@@ -135,7 +135,7 @@ render() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-const SERVER_URL2 = 'http://flaming-airlines.herokuapp.com/flight_users.json'
+const SERVER_URL2 = 'https://flaming-airlines.herokuapp.com/flight_users.json'
 
 // get the entire seatmap data from the server via axios .
 // display the data in seatMap
@@ -200,7 +200,7 @@ class SeatMap extends Component {
 
      // this.state.secret.push(s); // Mutation never mutate arrays!!
      // this.setState({secrets: [...this.state.secrets,s]});
-     axios.post(SERVER_URL, {
+     axios.post(SERVER_URL2, {
        seat: this.state.selectedSeat,
        user_id: 6,
        flight_id: this.props.flight_id,
