@@ -95,18 +95,14 @@ td {
 /* select seat styles
 ============================================================================ */
 
-.seatMap {
-  text-align: center;
-}
-
 .seatMap p {
-  margin-top: 1em;
+  margin-top: 0.6em;
   color: #876271;
 }
 
 .seat {
   width:22%;
-  height:80px;
+  height:60px;
   /* border: 1px solid blue; */
   background: url(./chair.svg);
   background-size: contain;
@@ -123,10 +119,19 @@ td {
 }
 
 .seatMap {
-  max-width: 500px;
-  margin: 0 auto;
+  max-width: 400px;
+  margin-left: 75px;
   display: flex;
-  flex-wrap: wrap
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+span {
+  font-weight: bold;
+}
+
+.bookingForm {
+  margin: 15px 0px 15px 85px;
 }
 
 #login {

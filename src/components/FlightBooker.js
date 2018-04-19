@@ -199,9 +199,18 @@ class SeatMap extends Component {
         <div>
           <div>
             <h2 className="bookingHeading">Booking Form</h2>
-            <form>
+            <form className="bookingForm">
               <p><span>Selected Seat: {this.state.selectedSeat}</span></p>
-              <button onClick={this.saveSeat}>submit</button>
+              <button style={{
+                  "background": "#1c4a7d",
+                  "color":  "white",
+                  "fontSize":  "1.2em",
+                  "marginTop":  "10px",
+                  "marginBottom": "15px",
+                  "fontFamily": "'Nunito', sans-serif",
+                  "padding": "5px 15px 5px 15px",
+                  "border": "none"
+              }} onClick={this.saveSeat}>Book</button>
               {/* <button onClick={this.showOccupied}>show occupied</button> */}
               <h2>{this.state.success}</h2>
             </form>
