@@ -19,7 +19,8 @@ class SeatMap extends Component {
       seats: Array.from({length: 40}, (x,i) => i+1),
       selectedSeat: '',
       occupied: '',
-      selected: false
+      selected: false,
+      flight_id: ''
     }
     this._handleChange = this._handleChange.bind(this);
     this.saveSeat = this.saveSeat.bind(this);
@@ -56,6 +57,7 @@ class SeatMap extends Component {
 
 
    }
+
 
   saveSeat(e){
      e.preventDefault();

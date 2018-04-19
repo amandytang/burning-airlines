@@ -81,20 +81,20 @@ class FlightDisplay extends Component {
     this._handleSeat = this._handleSeat.bind(this);
 }
 
-
 _handleSeat (e) {
   e.preventDefault();
   let flight_id = e.target.getAttribute("id");
   console.log(flight_id);
   this.setState({ flight_id });
 }
-// we now have the flight_id in the flightdisplay component's state.
-// send flight_id in ajax request to db to find the seatMap
+
+// we now have the flight_id in the FlightDisplay (gallery) component's state.
+// Need to pass this to the booking form - but making calling this.props.flight_id
 
 render() {
 
-    return ( 
-      <div className="FlightDisplay"><h2>Available Flights</h2>
+    return (
+      <div><div className="FlightDisplay"><h2>Available Flights</h2>
       <table>
       <tbody>
       <tr>
@@ -109,7 +109,7 @@ render() {
       <td><p key={f.id}>{f.destination}</p></td>
       <td><p key={f.id}>{f.date}</p></td>
       <td><p key={f.id}>BA0{f.id}</p></td>
-      <td><form className="seatFetcher" id={f.id} onSubmit={ this._handleSeat }><input type="submit" value="View" id="searchButton" style={{
+      <td><form className="seatFetcher" id={f.id} onSubmit={ this._handleSeat }><input type="submit" value="View" style={{
                "background": "#1c4a7d",
           "color":  "white",
           "fontSize":  "1.2em",
@@ -123,7 +123,9 @@ render() {
           )}
       </tbody>
       </table>
-      </div>
+
+      </div>        <SeatMap />
+</div>
 
     )
   }
@@ -149,7 +151,8 @@ class SeatMap extends Component {
       selectedSeat: '',
       occupied: '',
       success:'',
-      selected: false
+      selected: false,
+      flight_id: ''
     }
     this._handleChange = this._handleChange.bind(this);
     this.saveSeat = this.saveSeat.bind(this);
@@ -183,7 +186,6 @@ class SeatMap extends Component {
      this.fetchSeats();
      console.log(this.state.occupied);
 
-
    }
 
   saveSeat(e){
@@ -195,7 +197,7 @@ class SeatMap extends Component {
      axios.post(SERVER_URL, {
        seat: this.state.selectedSeat,
        user_id: 5,
-       flight_id: this.props.flight_id,
+       flight_id: 1,
      }).then(response => {
       console.log(response)
      })
@@ -284,8 +286,6 @@ class FlightBooker extends Component {
  }
 
 
-
-
   render() {
     return (
       <div>
@@ -293,11 +293,10 @@ class FlightBooker extends Component {
           <FlightSearchForm onSubmit={this.fetchFlights}/>
         </div>
         <FlightDisplay flights={this.state.flights} />
-        <SeatMap />
       </div>
     );
 
-  } //if
+  }
 }
 
 
