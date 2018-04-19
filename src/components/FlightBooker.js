@@ -125,34 +125,37 @@ class SeatMap extends Component {
   constructor(props){
     super(props);
     this.state = {
-      seats: Array.from({length: 20}, (x,i) => i+1),
+      seats: Array.from({length: 40}, (x,i) => i+1),
+      // seats: [],
       selectedSeat: '',
-      occupied: '',
+      occupied: [],
       success:'',
       selected: false
     }
     this._handleChange = this._handleChange.bind(this);
     this.saveSeat = this.saveSeat.bind(this);
     this.showOccupied = this.showOccupied.bind(this);
-    this.fetchSeats = this.fetchSeats.bind(this);
+    // this.fetchSeats = this.fetchSeats.bind(this);
 
-    //occupied seats Polling
-    // const fetchSeats = () => { // fat arrow functions do not break the conenction to this
-    //   axios.get(SERVER_URL).then(results => this.setState({occupied: results.data.map(item => item.seat)}))
-    //   setTimeout(fetchSeats, 40000); // recursion chane this bac to 4seconds
-    // }
-    // fetchSeats();
+
+    const fetchSeats = () => { // fat arrow functions do not break the conenction to this
+      axios.get(SERVER_URL2).then(results => this.setState({occupied: results.data.map(item => item.seat)}))
+      setTimeout(fetchSeats, 4000); //
+    }
+    fetchSeats();
    }
 
-  fetchSeats(){ // fat arrow functions do not break the conenction to this
-     axios.get(SERVER_URL2).then(results => this.setState({occupied: results.data.map(item => item.seat)}))
-     setTimeout(this.fetchSeats, 40000); // recursion chane this bac to 4seconds
-   };
+  // fetchSeats(){ // fat arrow functions do not break the conenction to this
+  //    axios.get(SERVER_URL2).then(results => this.setState({occupied: results.data.map(item => item.seat)}))
+  //    setTimeout(this.fetchSeats, 40000); // recursion change this back to 4sec
+  //  };
 
 
    _handleChange(e){
     this.setState({selectedSeat: e.currentTarget.id });
+    this.setState({occupied: [...this.state.occupied, e.currentTarget.id]})
     console.log(this.state.selectedSeat);
+
     // const newTransform = this.state.selected === 'rotateY(180deg)' ? 'rotateY(0deg)' : 'rotateY(180deg)';
     this.setState({selected: !this.state.selected})
 
@@ -170,6 +173,7 @@ class SeatMap extends Component {
      e.preventDefault();
      console.log('sending post');
      this.setState({success: 'Your Seat Has Been Sucessfully Booked'});
+
      // this.state.secret.push(s); // Mutation never mutate arrays!!
      // this.setState({secrets: [...this.state.secrets,s]});
      axios.post(SERVER_URL, {
@@ -192,14 +196,16 @@ class SeatMap extends Component {
             <form>
               <p><span>Selected Seat: {this.state.selectedSeat}</span></p>
               <button onClick={this.saveSeat}>submit</button>
-              {/* <button onClick={this.showOccupied}>show occupied</button> */}
+              <button onClick={this.showOccupied}>show occupied</button>
               <h2>{this.state.success}</h2>
             </form>
           </div>
 
           <div className="seatMap">
-              {this.state.seats.map((s) => <div onClick={this._handleChange} id={s} key={s} className='seat'><p>{s}</p></div>)}
-              {/* {this.state.seats.map((s) => <div onClick={this._handleChange} id={s} key={s} className={this.state.selected ? 'seatBlue seat' : 'seat'}><p>{s}</p></div>)} */}
+              {/*this.state.occupied.map((s) => <div onClick={this._handleChange} id={s} key={s} className='seat'><p>{s}</p></div>)*/}
+
+              {this.state.seats.map((s) => <div onClick={this._handleChange} id={s} key={s} className={this.state.occupied.includes(s.toString()) ? "seat" : "seat seatBlue"}><p>{s}</p></div>)}
+
           </div>
         </div>
       );
