@@ -2,7 +2,7 @@ import React, { PureComponent as Component } from 'react';
 import axios from 'axios';
 // import PropTypes from 'prop-types';
 
-const SERVER_URL = 'https://flaming-airlines.herokuapp.com/flights.json'; // Replace with url.json from heroku after deployment. The api should return flight info (origin, date, destination and plane) - plane is currently empty because we haven't fixed the backend to allow us to assign a plane to a flight
+const SERVER_URL = 'https://flaming-airlines.herokuapp.com/flights.json'; // We still haven't fixed the backend to allow us to assign a plane to a flight
 
 class FlightSearchForm extends Component {
   constructor(props) {
@@ -28,7 +28,6 @@ _handleSubmit (e) {
   e.preventDefault();
   this.props.onSubmit( this.state.origin, this.state.destination )
 }
-
 
   render() {
     return (
@@ -111,7 +110,7 @@ render() {
       <td><p key={f.id}>{f.date}</p></td>
       <td><p key={f.id}>BA0{f.id}</p></td>
       <td><form className="seatFetcher" id={f.id} onSubmit={ this._handleSeat }><input type="submit" value="View" style={{
-               "background": "#1c4a7d",
+          "background": "#1c4a7d",
           "color":  "white",
           "fontSize":  "1.2em",
           "marginTop":  "10px",
@@ -125,7 +124,8 @@ render() {
       </tbody>
       </table>
 
-      </div>        <SeatMap />
+    </div>
+    {this.state.flight_id ? <SeatMap flight_id={this.state.flight_id} /> : ""}
 </div>
 
     )
@@ -148,36 +148,39 @@ class SeatMap extends Component {
   constructor(props){
     super(props);
     this.state = {
-      seats: Array.from({length: 20}, (x,i) => i+1),
+      seats: Array.from({length: 40}, (x,i) => i+1),
+      // seats: [],
       selectedSeat: '',
-      occupied: '',
+      occupied: [],
       success:'',
-      selected: false,
-      flight_id: ''
+      selected: false
+      // flight_id: this.props.flight_id
     }
     this._handleChange = this._handleChange.bind(this);
     this.saveSeat = this.saveSeat.bind(this);
     this.showOccupied = this.showOccupied.bind(this);
     this.fetchSeats = this.fetchSeats.bind(this);
 
-    //occupied seats Polling
-    // const fetchSeats = () => { // fat arrow functions do not break the conenction to this
-    //   axios.get(SERVER_URL).then(results => this.setState({occupied: results.data.map(item => item.seat)}))
-    //   setTimeout(fetchSeats, 40000); // recursion chane this bac to 4seconds
-    // }
-    // fetchSeats();
+
+    const fetchSeats = () => { // fat arrow functions do not break the conenction to this
+      axios.get(SERVER_URL2).then(results => this.setState({occupied: results.data.map(item => item.seat)}))
+      setTimeout(fetchSeats, 400000); //
+    }
+    fetchSeats();
    }
 
   fetchSeats(){ // fat arrow functions do not break the conenction to this
 
      axios.get(SERVER_URL2).then(results => this.setState({occupied: results.data.map(item => item.seat)}))
-     setTimeout(this.fetchSeats, 40000); // recursion chane this bac to 4seconds
+     setTimeout(this.fetchSeats, 40000); // recursion change this back to 4sec
    };
 
 
    _handleChange(e){
     this.setState({selectedSeat: e.currentTarget.id });
+    this.setState({occupied: [...this.state.occupied, e.currentTarget.id]})
     console.log(this.state.selectedSeat);
+
     // const newTransform = this.state.selected === 'rotateY(180deg)' ? 'rotateY(0deg)' : 'rotateY(180deg)';
     this.setState({selected: !this.state.selected})
 
@@ -193,13 +196,14 @@ class SeatMap extends Component {
   saveSeat(e){
      e.preventDefault();
      console.log('sending post');
-     this.setState({success: 'Your Seat Has Been Sucessfully Booked'});
+     this.setState({success: 'Your Seat Has Been Successfully Booked!'});
+
      // this.state.secret.push(s); // Mutation never mutate arrays!!
      // this.setState({secrets: [...this.state.secrets,s]});
      axios.post(SERVER_URL, {
        seat: this.state.selectedSeat,
-       user_id: 5,
-       flight_id: 1,
+       user_id: 6,
+       flight_id: this.props.flight_id,
      }).then(response => {
       console.log(response)
      })
@@ -214,7 +218,9 @@ class SeatMap extends Component {
           <div>
             <h2 className="bookingHeading">Booking Form</h2>
             <form className="bookingForm">
+
               <p><span>Selected Seat: {this.state.selectedSeat}</span></p>
+              <p className="successMsg">{this.state.success}</p>
               <button style={{
                   "background": "#1c4a7d",
                   "color":  "white",
@@ -226,13 +232,15 @@ class SeatMap extends Component {
                   "border": "none"
               }} onClick={this.saveSeat}>Book</button>
               {/* <button onClick={this.showOccupied}>show occupied</button> */}
-              <h2>{this.state.success}</h2>
             </form>
+
           </div>
 
           <div className="seatMap">
-              {this.state.seats.map((s) => <div onClick={this._handleChange} id={s} key={s} className='seat'><p>{s}</p></div>)}
-              {/* {this.state.seats.map((s) => <div onClick={this._handleChange} id={s} key={s} className={this.state.selected ? 'seatBlue seat' : 'seat'}><p>{s}</p></div>)} */}
+              {/*this.state.occupied.map((s) => <div onClick={this._handleChange} id={s} key={s} className='seat'><p>{s}</p></div>)*/}
+
+              {this.state.seats.map((s) => <div onClick={this._handleChange} id={s} key={s} className={this.state.occupied.includes(s.toString()) ? "seat" : "seat seatBlue"}><p>{s}</p></div>)}
+
           </div>
         </div>
       );
@@ -300,7 +308,6 @@ class FlightBooker extends Component {
 // Child will be able to access the parent's data by calling this.props.propName? provided props has been passed down first
 
  // To pass state from child to parent, we need to write a function in the parent which we give to the child to run via props (like <FlightDisplay flights={this.state.flights} />  The child runs the value and passes the state in
-
 
 
 
