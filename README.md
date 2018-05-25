@@ -1,6 +1,6 @@
 # Burning Airlines
 
-[Burning Airlines](https://burrrning-airlines.herokuapp.com/) is a flight-booking app built as part of a group speed-coding exercise at General Assembly. Made in collaboration with [Austin Nash](https://github.com/austinnash80) and [Joseph Ocampo](https://github.com/joseph-michael)
+[Burning Airlines](https://burrrning-airlines.herokuapp.com/) is a flight-booking app built as part of a group speed-coding exercise at General Assembly. Made in collaboration with [Austin Nash](https://github.com/austinnash80) and [Joseph Ocampo](https://github.com/joseph-michael).
 
 ![Burning Airlines Screencapture](https://media.giphy.com/media/2tPsnd3ebnmU52106E/giphy.gif)
 <br/>
