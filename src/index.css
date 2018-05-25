@@ -7,7 +7,7 @@
 
 a {
   text-decoration: none;
-} 
+}
 
 .App {
   margin: 0;
@@ -160,4 +160,46 @@ span {
   padding-bottom: 0;
   padding-left: 0;
   color: green;
+}
+
+@media only screen and (max-width: 760px) {
+  .header {
+    margin-left: -10vw !important;
+  }
+  table {
+    margin-right: 13vw;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .header {
+    margin-left: -18vw !important;
+  }
+  .searchForm, .FlightDisplay, .LoginDisplay{
+    margin-left: -2vw !important;
+  }
+}
+
+@media only screen and (max-width: 610px) {
+  .header {
+    margin-left: -20vw !important;
+  }
+  select {
+    width: 61vw !important;
+  }
+  .tableHeading {
+    font-size: 1em;
+  }
+}
+
+@media only screen and (max-width: 564px) {
+  .searchForm, .FlightDisplay, .LoginDisplay{
+    margin-left: -6vw !important;
+  }
+  select {
+    width: 55vw !important;
+  }
+  td p {
+    font-size: 0.9em;
+  }
 }

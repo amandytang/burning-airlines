@@ -286,14 +286,7 @@ class FlightBooker extends Component {
              this.setState({ flights:flightsArr });
            }.bind(this));
 
-// We need to access origin and destination (state) from child and put into variables to filter by
-
-
-// function isDestination(d) {
-//   return d.destination === 'Sydney';
-// }
-
-  // setTimeout(fetchFlights, 10000); // function works on timeout - how to make it bind to onSubmit
+ 
  }
 // writing this from parent's pOV so can't use this.state.f
  passFlightId (flight_id) { // Would have thought we pass in the child's state like: this.state.flight_id as parameters but it fails to compile
@@ -308,8 +301,6 @@ class FlightBooker extends Component {
 // Child will be able to access the parent's data by calling this.props.propName? provided props has been passed down first
 
  // To pass state from child to parent, we need to write a function in the parent which we give to the child to run via props (like <FlightDisplay flights={this.state.flights} />  The child runs the value and passes the state in
-
-
 
   render() {
     return (
