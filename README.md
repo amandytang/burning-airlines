@@ -21,7 +21,7 @@
 * Ruby on Rails
 * PostgreSQL  
 
-The server lives [here](https://github.com/amandytang/techmeetups).
+The server lives [here](https://github.com/amandytang/burning-airlines-server).
 
 ## Acknowledgements
 Much thanks to Joel, John and Theo!
